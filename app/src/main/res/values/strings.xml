@@ -9,6 +9,11 @@
     <string name="sin_limite">Sonar hasta que la apague</string>
     <string name="sin_limite_ayuda">Con esto la alarma no se corta sola. Se apaga con el boton Silenciar del aviso o con Detener. Igual se corta a los 5 minutos para no gastar la bateria.</string>
     <string name="respaldar">Respaldar en Descargas</string>
+    <string name="alerta_encabezado">OFERTA DE RUTA</string>
+    <string name="alerta_abrir">Abrir Envios Extra</string>
+    <string name="alerta_silenciar">Silenciar</string>
+    <string name="alerta_pie">Abre la app para que tu aceptes la ruta. Alerta Rutas no acepta nada por ti.</string>
+    <string name="permiso_pantalla_completa">Permitir aviso en pantalla completa</string>
     <string name="horario_titulo">Horario de trabajo</string>
     <string name="horario_activado">Sonar solo en mi horario</string>
     <string name="horario_ayuda">Fuera del horario la oferta queda anotada igual, pero sin alarma.</string>

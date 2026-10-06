@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -74,6 +75,9 @@ class MainActivity : Activity() {
         configurarHorario()
 
         findViewById<Button>(R.id.btnPermiso).setOnClickListener { abrirAjustesDeAcceso() }
+        findViewById<Button>(R.id.btnPantallaCompleta).setOnClickListener {
+            abrirAjustesDePantallaCompleta()
+        }
         findViewById<Button>(R.id.btnCompartir).setOnClickListener { compartirRegistro() }
         findViewById<Button>(R.id.btnBorrar).setOnClickListener {
             Prefs.borrarRegistro(this)
@@ -224,6 +228,8 @@ class MainActivity : Activity() {
                 "Permiso listo, pero no encuentro la app Envios Extra en este telefono."
             !Prefs.alertaActiva(this) ->
                 "Alerta apagada. Enciende el switch para volver a escuchar."
+            !Aviso.puedeUsarPantallaCompleta(this) ->
+                "Escuchando. Falta permitir el aviso en pantalla completa para que la oferta aparezca sola."
             !Prefs.enHorario(this) ->
                 "Escuchando, pero fuera de tu horario: las ofertas se anotan sin alarma."
             else ->
@@ -288,6 +294,28 @@ class MainActivity : Activity() {
         }
         Prefs.setUltimoRespaldo(this, Respaldo.hoy())
         Toast.makeText(this, "Guardado en Descargas: $nombre", Toast.LENGTH_LONG).show()
+    }
+
+    private fun abrirAjustesDePantallaCompleta() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            Toast.makeText(
+                this,
+                "Tu version de Android no necesita este permiso",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+        try {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT)
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(
+                this,
+                "Abre Ajustes > Aplicaciones > Alerta Rutas > Notificaciones de pantalla completa",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     private fun abrirAjustesDeAcceso() {

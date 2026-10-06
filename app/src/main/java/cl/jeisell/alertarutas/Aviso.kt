@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
+import android.os.Build
 
 /**
  * Muestra el aviso propio de la app: aparece arriba en la pantalla con un boton
@@ -18,6 +19,8 @@ import android.graphics.drawable.Icon
 object Aviso {
 
     const val ID_AVISO = 2001
+    const val EXTRA_TITULO = "titulo"
+    const val EXTRA_TEXTO = "texto"
 
     private const val CANAL = "ofertas_ruta"
 
@@ -36,6 +39,15 @@ object Aviso {
             banderas()
         )
 
+        // pantalla completa estilo llamada entrante: enciende la pantalla
+        val pantallaCompleta = Intent(ctx, AlertaActivity::class.java)
+        pantallaCompleta.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        pantallaCompleta.putExtra(EXTRA_TITULO, titulo)
+        pantallaCompleta.putExtra(EXTRA_TEXTO, texto)
+        val piPantallaCompleta = PendingIntent.getActivity(
+            ctx, 3, pantallaCompleta, banderas()
+        )
+
         val icono = Icon.createWithResource(ctx, R.drawable.ic_app)
         val cuerpo = if (texto.isBlank()) "Toca para abrir Envios Extra" else texto
 
@@ -49,6 +61,7 @@ object Aviso {
             .setAutoCancel(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(piAbrir)
+            .setFullScreenIntent(piPantallaCompleta, true)
             .addAction(
                 Notification.Action.Builder(icono, "Abrir Envios Extra", piAbrir).build()
             )
@@ -61,6 +74,17 @@ object Aviso {
         } catch (e: Exception) {
             // si falta el permiso de notificaciones, la alarma suena igual
         }
+    }
+
+    /**
+     * Desde Android 14 el aviso a pantalla completa necesita un permiso aparte
+     * que la persona concede en los ajustes de la app.
+     */
+    fun puedeUsarPantallaCompleta(ctx: Context): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return true
+        val nm = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            ?: return true
+        return nm.canUseFullScreenIntent()
     }
 
     fun quitar(ctx: Context) {

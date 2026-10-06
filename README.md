@@ -10,9 +10,11 @@ llegaron.
 - Cuando llega una, sube el volumen de alarma al máximo, suena la alarma del
   teléfono en bucle y vibra. Suena aunque el teléfono esté en silencio, porque
   usa el canal de *alarma*.
-- Muestra su propio aviso arriba de la pantalla con dos botones: **Abrir Envíos
-  Extra**, que lleva directo a la app de un toque, y **Silenciar**, que corta la
-  alarma. El aviso se ve también sobre la pantalla de bloqueo.
+- Muestra un aviso **a pantalla completa, estilo llamada entrante**: la pantalla
+  se enciende sola, aparece la oferta en grande y un botón **Abrir Envíos
+  Extra** que lleva directo a la app, más **Silenciar**. Funciona sobre la
+  pantalla bloqueada; si el teléfono tiene clave, pide desbloquear antes de
+  saltar a la otra app.
 - **Horario de trabajo**: días de la semana y rango de horas en que la alarma
   puede sonar. Soporta turnos que cruzan la medianoche (18:00 a 02:00, por
   ejemplo). Fuera del horario la oferta queda anotada igual, pero sin alarma.
@@ -81,6 +83,7 @@ app/src/main/java/cl/jeisell/alertarutas/
   RutaListenerService.kt   escucha las notificaciones y dispara la alerta
   Alarma.kt                sonido en canal de alarma + vibración
   Aviso.kt                 aviso en pantalla con el botón "Abrir Envíos Extra"
+  AlertaActivity.kt        pantalla completa estilo llamada entrante
   SilenciarReceiver.kt     apaga la alarma desde el botón del aviso
   Respaldo.kt              exporta el registro a CSV en la carpeta Descargas
   Prefs.kt                 configuración, horario de trabajo y registro
